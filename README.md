@@ -1,6 +1,6 @@
 #NON-PLANAR 3D PRINTING TOOLPATH GENERATION
 
-#lIBRARIES REQUIRED:
+#LIBRARIES REQUIRED:
 1. Eigen (http://eigen.tuxfamily.org/index.php?title=Main_Page)
 2. Libigl (https://github.com/libigl/libigl)
 
