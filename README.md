@@ -2,7 +2,8 @@
 
 #LIBRARIES REQUIRED:
 1. Eigen (http://eigen.tuxfamily.org/index.php?title=Main_Page)
-2. Libigl (https://github.com/libigl/libigl)
+2. Libigl (https://github.com/libigl/libigl)				# for reading STL file
+3. gnuplot-iostream(https://github.com/dstahlke/gnuplot-iostream)	# (optional) for visualization data
 
 #INSTALLATION INSTRUCTIONS FOR LIBIGL AND DEPENDANCIES:
 
@@ -26,6 +27,16 @@
 			sudo make install
 3. NOTE : If only header files are added in the /usr/local/include/igl folder, then add all the cpp and extra support files from cloned libigl source directory (copy all files from ${SOURCE_DIR}/include/igl/ )
 4. To avoid issue of 'pythread', add [target_link_libraries(${EXECUTABLE_FILE} pthread) to cmake]
+
+#INSTALLATION INSTRUCTIONS FOR GNUPLOT-IOSTREAM AND DEPENDANCIES:
+
+1. download zip or clone git directory (https://github.com/dstahlke/gnuplot-iostream)
+2. include the directory in CMakeLists and header in main_file.cpp
+3. certain dependancies required:
+	[target_link_libraries(${EXECUTABLE_FILE} ${PATH}/libboost_iostreams.a)]
+	[target_link_libraries(${EXECUTABLE_FILE} ${PATH}/libboost_system.a)]
+	[target_link_libraries(${EXECUTABLE_FILE} ${PATH}/libboost_filesystem.a)]
+	[target_link_libraries(${EXECUTABLE_FILE} ${PATH}/libutil.a)]
 
 #RUNNING MAIN FILE:
 

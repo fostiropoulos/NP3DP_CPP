@@ -168,11 +168,7 @@ Eigen::MatrixXd	NPAM::project_grid_points(Eigen::MatrixXd fnew, Eigen::MatrixXd 
 	Eigen::MatrixXd p3(1,v.cols());
 	Eigen::MatrixXd	tri(3,v.cols());
 	Eigen::MatrixXd	fillpts = Eigen::MatrixXd::Constant(int(1.5*pts.rows()),6,0);
-	double a;	
-	double b;	
-	double c;	
-	double d;
-	double zval;
+	double a, b, c, d, zval;
 	long int fillpts_idx = 0;
 	for (long int i=0;i<fnew.rows();++i)
 	{
