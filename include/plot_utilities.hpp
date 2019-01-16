@@ -1,3 +1,6 @@
+#ifndef PLOT_UTILITIES
+#define PLOT_UTILITIES
+
 #include <string>
 #include <vector>
 #include <Eigen/Eigen>
@@ -32,3 +35,5 @@ public:
     void ActiveScatterplot3d(std::vector<std::vector<double> >, std::string="black", double=1, int=7);
     void ActiveScatterplot3d(Eigen::MatrixXd, std::string="black", double=1, int=7);
 };
+
+#endif

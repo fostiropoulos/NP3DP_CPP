@@ -1,3 +1,6 @@
+#ifndef NPAM_UTILITIES
+#define NPAM_UTILITIES
+
 #include <Eigen/Dense>
 #include <vector>
 #include <string>
@@ -24,3 +27,5 @@ public:
 	// generate the hatching path with points
 	static Eigen::MatrixXd Infill_Path(Eigen::MatrixXd, bool, double, double, double, double);
 };
+
+#endif

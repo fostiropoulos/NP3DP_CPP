@@ -1,3 +1,6 @@
+#ifndef TRANSFORMATION_UTILITIES
+#define TRANSFORMATION_UTILITIES
+
 #include <Eigen/Eigen>
 #include <vector>
 #include <string>
@@ -67,3 +70,4 @@ public:
 	static Eigen::Matrix3d rot_z(double);
 };
 
+#endif

@@ -1,3 +1,6 @@
+#ifndef FILE_RW
+#define FILE_RW
+
 #include <string>
 #include <vector>
 #include <Eigen/Eigen>
@@ -21,3 +24,5 @@ public:
 	static void file_write(std::string, Eigen::MatrixXi);
     static void file_write(std::string, Eigen::MatrixXf);
 };
+
+#endif

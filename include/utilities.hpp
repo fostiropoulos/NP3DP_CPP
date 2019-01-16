@@ -1,3 +1,6 @@
+#ifndef UTILITIES
+#define UTILITIES
+
 #include <Eigen/Dense>
 #include <vector>
 #include <string>
@@ -67,3 +70,5 @@ public:
 	static std::vector<int> find_idx(std::vector<float>);
 	static std::vector<int> find_idx(std::vector<double>);
 };
+
+#endif
