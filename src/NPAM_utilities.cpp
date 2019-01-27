@@ -291,17 +291,14 @@ Eigen::MatrixXd NPAM::Infill_Path(Eigen::MatrixXd fillpts, bool FlipTravel, doub
 	storeset_nz = ut::vec_to_mat(storeset_nz_vec);
 
 	// this is to get the direction of last line travel
-	if (storesort(storesort_strt-1,dir2)==storeset_nz(0,dir2))
+	if (double(flip)/2==round(double(flip)/2))
 	{
-		storesort.block(storesort_strt,0,storeset_nz.rows(),storeset_nz.cols()) = storeset_nz;	
-	}
-	else
-	{
-		Eigen::MatrixXd storeset_nz_rev(storeset_nz.rows(),storeset_nz.cols());
+		Eigen::MatrixXd storeset_nz_rev(storeset_nz.rows(),storeset_nz.cols());	
 		storeset_nz_rev = storeset_nz.colwise().reverse();
-		storeset_nz = storeset_nz_rev;	
-		storesort.block(storesort_strt,0,storeset_nz.rows(),storeset_nz.cols()) = storeset_nz;
+		storeset_nz = storeset_nz_rev;
 	}
+	storesort.block(storesort_strt,0,storeset_nz.rows(),storeset_nz.cols()) = storeset_nz;	
+
 	Eigen::VectorXd	Rx = -(storesort.block(0,4,storesort.rows(),1).array()/storesort.block(0,5,storesort.rows(),1).array())*(180/3.14159);
 	Eigen::VectorXd	Ry = (storesort.block(0,3,storesort.rows(),1).array()/storesort.block(0,5,storesort.rows(),1).array())*(180/3.14159);
 	Eigen::MatrixXd storesort0x1(storesort.rows(),5);
