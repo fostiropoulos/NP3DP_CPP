@@ -197,6 +197,46 @@ Eigen::MatrixXd rtf::qt2eul(Eigen::MatrixXd quat, std::string seq)
 
 ///////////////////////////////////////////////////////////
 
+Eigen::MatrixXd rtf::eul2bxbybz(Eigen::MatrixXd eul_angles)
+{
+	// input euler alpha,beta,gamma for ZYX (in radians)
+	Eigen::MatrixXd bxbybz = Eigen::MatrixXd::Constant(eul_angles.rows(),9,0);
+	for (unsigned int i=0;i<eul_angles.rows();++i)
+	{
+		Eigen::Matrix3d R = rtf::eul2rot(eul_angles.row(i));
+		bxbybz.row(i) << R(0,0),R(1,0),R(2,0),R(0,1),R(1,1),R(2,1),R(0,2),R(1,2),R(2,2);
+	}
+	return bxbybz;
+}
+
+///////////////////////////////////////////////////////////
+
+Eigen::MatrixXd rtf::bxbybz2eul(Eigen::MatrixXd bxbybz)
+{
+	Eigen::MatrixXd Gx(1,3), Gy(1,3), Gz(1,3);
+	Gx << 1,0,0;
+	Gy << 0,1,0;
+	Gz << 0,0,1;
+	Eigen::Matrix3d R = Eigen::Matrix3d::Constant(0);
+	Eigen::MatrixXd cba = Eigen::MatrixXd::Constant(bxbybz.rows(), 3, 0);
+	for (unsigned int i=0;i<bxbybz.rows();++i)
+	{
+		R(0,0) = bxbybz(i,0)*Gx(0,0)+bxbybz(i,1)*Gx(0,1)+bxbybz(i,2)*Gx(0,2);
+		R(0,1) = bxbybz(i,3)*Gx(0,0)+bxbybz(i,4)*Gx(0,1)+bxbybz(i,5)*Gx(0,2);
+		R(0,2) = bxbybz(i,6)*Gx(0,0)+bxbybz(i,7)*Gx(0,1)+bxbybz(i,8)*Gx(0,2);
+		R(1,0) = bxbybz(i,0)*Gy(0,0)+bxbybz(i,1)*Gy(0,1)+bxbybz(i,2)*Gy(0,2);
+		R(1,1) = bxbybz(i,3)*Gy(0,0)+bxbybz(i,4)*Gy(0,1)+bxbybz(i,5)*Gy(0,2);
+		R(1,2) = bxbybz(i,6)*Gy(0,0)+bxbybz(i,7)*Gy(0,1)+bxbybz(i,8)*Gy(0,2);
+		R(2,0) = bxbybz(i,0)*Gz(0,0)+bxbybz(i,1)*Gz(0,1)+bxbybz(i,2)*Gz(0,2);
+		R(2,1) = bxbybz(i,3)*Gz(0,0)+bxbybz(i,4)*Gz(0,1)+bxbybz(i,5)*Gz(0,2);
+		R(2,2) = bxbybz(i,6)*Gz(0,0)+bxbybz(i,7)*Gz(0,1)+bxbybz(i,8)*Gz(0,2);
+		cba.row(i) = rtf::rot2eul(R,"ZYX");	
+	}
+	return cba;	
+}
+
+///////////////////////////////////////////////////////////
+
 Eigen::MatrixXd rtf::get_rob_T_part(Eigen::MatrixXd part_pts, Eigen::MatrixXd rob_pts)
 {
 // part_pts: co-ordinates with respect to CAD part frame
@@ -226,15 +266,18 @@ Eigen::MatrixXd rtf::get_rob_T_part(Eigen::MatrixXd part_pts, Eigen::MatrixXd ro
     { 
         centroid_part_pts = rtf::mean(part_pts);
         centroid_rob_pts = rtf::mean(rob_pts);
-        for (int i=0;i<part_pts.rows();++i)
-        {
-            shifted_part_pts.block(i,0,1,shifted_part_pts.cols()) = part_pts.block(i,0,1,part_pts.cols()) - centroid_part_pts;
-            shifted_rob_pts.block(i,0,1,shifted_rob_pts.cols()) = rob_pts.block(i,0,1,rob_pts.cols()) - centroid_rob_pts;   
-        }
-        cros_cov_mat = shifted_part_pts.transpose()*shifted_rob_pts;
-    // Singular Value Decomposition
+        shifted_part_pts.col(0) = part_pts.col(0).array() - centroid_part_pts(0,0);
+        shifted_part_pts.col(1) = part_pts.col(1).array() - centroid_part_pts(0,1);
+        shifted_part_pts.col(2) = part_pts.col(2).array() - centroid_part_pts(0,2);
+		shifted_rob_pts.col(0) = rob_pts.col(0).array() - centroid_rob_pts(0,0);
+		shifted_rob_pts.col(1) = rob_pts.col(1).array() - centroid_rob_pts(0,1);
+		shifted_rob_pts.col(2) = rob_pts.col(2).array() - centroid_rob_pts(0,2);
+		cros_cov_mat = shifted_part_pts.transpose()*shifted_rob_pts;
+    
+    	// Singular Value Decomposition
         Eigen::JacobiSVD<Eigen::MatrixXd> svd(cros_cov_mat, Eigen::ComputeFullU | Eigen::ComputeFullV);
-    // Take care of reflection case due to negative eigen vectors
+    	
+    	// Take care of reflection case due to negative eigen vectors
         U_T = svd.matrixU().transpose();    V = svd.matrixV();
         M(2,2) = (V*U_T).determinant();
         R = V*M*U_T;

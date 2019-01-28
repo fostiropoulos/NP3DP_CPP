@@ -117,7 +117,7 @@ int main()
 		////////////////////////////
 	    // infill path
 		////////////////////////////
-		Eigen::MatrixXd	layer_tool_path = NPAM::Infill_Path(fillpts, FlipTravel, space, hatch_angle, x_avg, y_avg);
+		Eigen::MatrixXd	layer_tool_path = NPAM::Infill_Path_with_euler(fillpts, FlipTravel, space, hatch_angle, x_avg, y_avg);
 		layer_tool_path.col(2) = layer_tool_path.col(2).array() + ((layer-1)*pathgap_z);
 		
 		if (generate_cont_toolpath)

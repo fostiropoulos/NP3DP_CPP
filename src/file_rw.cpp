@@ -76,10 +76,20 @@ Eigen::MatrixXd file_rw::file_read_mat(std::string file_name)
         std::cerr << "File/Path does not exist" << std::endl;
         std::terminate();
     }
-    Eigen::MatrixXd mat(vec.size(), vec[0].size());
-    for (int i = 0; i < vec.size(); ++i)
-        mat.row(i) = Eigen::VectorXd::Map(&vec[i][0], vec[0].size());
-    return mat;
+    if (vec.size()!=0)
+    {   
+        Eigen::MatrixXd mat(vec.size(), vec[0].size());
+        for (int i = 0; i < vec.size(); ++i)
+        {
+            mat.row(i) = Eigen::VectorXd::Map(&vec[i][0], vec[0].size());
+        }
+        return mat;
+    }
+    else
+    {
+        Eigen::MatrixXd mat(0,0);
+        return mat;
+    }
 } 
 
 ////////////////////////////////////////////////////////////

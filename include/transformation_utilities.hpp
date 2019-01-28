@@ -51,6 +51,15 @@ public:
 	// NOTE: Input Quaternion is in [x,y,z,w] form 
 	static Eigen::MatrixXd qt2eul(Eigen::MatrixXd, std::string="");
 
+	// Euler Angles to Rotation Vectors Conversion
+	// Input euler alpha,beta,gamma for ZYX (in radians)
+	static Eigen::MatrixXd eul2bxbybz(Eigen::MatrixXd);
+
+	// Euler Angles to Rotation Vectors Conversion
+	// Input bxbybz as a single nx9 Matrix
+	// Output is ZYX euler angles in radians 	
+	static Eigen::MatrixXd bxbybz2eul(Eigen::MatrixXd);
+
 	// Generate homogenous transformation between 2 coordiante frames using known correspondances between 4 or more points 
 	static Eigen::MatrixXd get_rob_T_part(Eigen::MatrixXd, Eigen::MatrixXd);
 	static Eigen::MatrixXd mean(Eigen::MatrixXi);
