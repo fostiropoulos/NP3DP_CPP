@@ -1,6 +1,6 @@
-cmake_minimum_required (VERSION 3.5)
+cmake_minimum_required (VERSION 3.2)
 
-# Executable name: 
+# Executable name:
 ##############################################################
 SET(EXEC OUTFile)
 ##############################################################
@@ -10,20 +10,20 @@ project(${EXEC})
 #include
 include_directories(/usr/local/include/eigen3)
 include_directories(/usr/local/include)
-include_directories(/home/aniruddha/Desktop/Non_Planar_3D_Printing/CPP/include)
-include_directories(/home/aniruddha/Desktop/Non_Planar_3D_Printing/CPP/data)
-include_directories(/home/aniruddha/gnuplot-iostream-master)
+include_directories(include)
+include_directories(data)
+include_directories(../gnuplot-iostream)
 
 
 #link
 link_directories(/usr/local/lib)
 
-# support for Libnabo  
+# support for Libnabo
 SET(CMAKE_CXX_FLAGS "-std=c++11 -O3")
 
 set(UTLIB src/utilities.cpp
-	src/NPAM_utilities.cpp 
-	src/file_rw.cpp 
+	src/NPAM_utilities.cpp
+	src/file_rw.cpp
 	src/transformation_utilities.cpp
 	src/plot_utilities.cpp)
 
@@ -52,4 +52,3 @@ target_link_libraries(${EXEC} /usr/lib/x86_64-linux-gnu/libboost_thread.a)
 # target_link_libraries(${EXEC} ${PYTHON_LIBRARIES})
 
 set_property(TARGET ${EXEC} PROPERTY CXX_STANDARD 14)
-
