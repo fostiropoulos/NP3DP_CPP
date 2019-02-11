@@ -2,10 +2,12 @@ cmake_minimum_required (VERSION 3.2)
 
 # Executable name:
 ##############################################################
-SET(EXEC OUTFile)
+SET(EXEC tool_path_library_test)
+SET(PROJ_NAME tool_path_library)
+
 ##############################################################
 
-project(${EXEC})
+project(${PROJ_NAME})
 
 #include
 include_directories(/usr/local/include/eigen3)
@@ -29,8 +31,9 @@ set(UTLIB src/utilities.cpp
 
 ##############################################################
 set(MAIN_FILE src/main_file.cpp)
+add_library(${PROJECT_NAME} STATIC ${UTLIB})
 ##############################################################
-
+install(TARGETS ${PROJECT_NAME} DESTINATION lib/${PROJECT_NAME})
 add_executable(${EXEC} ${MAIN_FILE} ${UTLIB})
 
 ##LINKED LIBRARIES
@@ -45,10 +48,5 @@ target_link_libraries(${EXEC} /usr/lib/x86_64-linux-gnu/libutil.a)
 target_link_libraries(${EXEC} /usr/lib/x86_64-linux-gnu/libboost_thread.a)
 
 
-
-
-# find_package(PythonLibs 2.7)
-# target_include_directories(${EXEC} PRIVATE ${PYTHON_INCLUDE_DIRS})
-# target_link_libraries(${EXEC} ${PYTHON_LIBRARIES})
 
 set_property(TARGET ${EXEC} PROPERTY CXX_STANDARD 14)
